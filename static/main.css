@@ -1,0 +1,44 @@
+:root {
+    --light-green: rgb(204, 250, 204);
+}
+
+body {
+  background: #fafafa;
+  color: darkslategrey;
+}
+
+.bg-green {
+  background-color: green;
+}
+
+.site-header .navbar-nav .nav-link {
+    color: var(--light-green);
+}
+
+.site-header .navbar-nav .nav-link:hover {
+    color: white;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: bold;
+}
+
+/* Remove border after inserting logo */
+.logo {
+  border: 1px solid darkslategrey;
+  width: 20vh;
+  height: 20vh;
+}
+
+main > .container {
+  padding-top: 5rem;
+}
+
+.btn-group-vertical .btn {
+  border-radius: 0.25rem !important;
+}
+
+.footer {
+  color: var(--light-green);
+  text-align: center;
+}
