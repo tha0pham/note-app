@@ -2,9 +2,66 @@
 {% set active_page = "index" %}
 
 {% block content %}
-<!-- Enter page content here -->
+    <div class="row">
+        <div class="col col-note">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">
+                        {{ note.title }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-subtitle text-muted mb-2">
+                        Created on {{ note.created_date }}<br>
+                        Last modified {{ note.last_modified }}
+                    </p>
+                    <p class="card-text">
+                        {{ note.text }}
+                    </p>
 
-<h1>Note Details</h1>
+                    <div class="card-body">
+                        <!-- TODO Make AJAX call here -->
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch">
+                            <label class="custom-control-label" for="customSwitch">Favorite</label>
+                        </div>
+                    <!------------------------------->
+                    </div>
+                    <div class="btn-group">
+                        <a href="{{ url_for('update_note', note_id = note.id) }}" class="btn btn-outline-success mr-3">Edit</a>
+                        <form action="{{ url_for('delete_note', note_id = note.id) }}" method="post">
+                            <input type="submit" value="Delete" class="btn btn-outline-danger"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<!-- End of page content -->
+        <div class="col-md-5">
+            <ul class="list-group">
+                <li class="list-group-item">
+
+                    <form action="{{ url_for('new_comment', note_id=note.id) }}" method="post">
+                        <!-- TODO Replace with FlaskForm -->
+                        <label for="comment">Add a Comment</label>
+                        <textarea class="form-control" id="comment" rows="2"></textarea>
+                        <input type="submit" value="Add Comment" class="btn btn-outline-success mt-3">
+                        <!--------------------------------->
+                    </form>
+                </li>
+
+                {% if note.comments %}
+                    {% if note.comments|length > 0 %}
+                        {% for comment in note.comments %}
+                            <li class="list-group-item">
+                                <small class="text-muted">{{ comment.created_date }}</small>
+                                <p>{{ comment.text }}</p>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+
+            </ul>
+        </div>
+    </div>
 {% endblock content %}

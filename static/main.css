@@ -3,12 +3,17 @@
 }
 
 body {
-  background: #fafafa;
-  color: darkslategrey;
+    background: #fafafa;
+    color: darkslategrey;
+    border: 3px solid yellow;
+}
+
+main {
+    border: 3px solid mediumpurple;
 }
 
 .bg-green {
-  background-color: green;
+    background-color: green;
 }
 
 .site-header .navbar-nav .nav-link {
@@ -31,14 +36,29 @@ body {
 }
 
 main > .container {
-  padding-top: 5rem;
+    padding-top: 5rem;
+    border: 1px solid orange;
 }
 
-.btn-group-vertical .btn {
-  border-radius: 0.25rem !important;
+.btn {
+    border-radius: 0.25rem !important;
 }
 
 .footer {
-  color: var(--light-green);
-  text-align: center;
+    color: var(--light-green);
+    text-align: center;
+}
+
+.row {
+    border: 1px solid blue;
+    height: 100%;
+}
+
+.col-note {
+    border: 1px solid lime;
+
+}
+
+.col-comment {
+    border: 1px solid red;
 }

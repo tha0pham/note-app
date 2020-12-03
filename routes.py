@@ -24,7 +24,18 @@ def new_note():
 
 @app.route('/notes/<note_id>')
 def get_note(note_id):
-    return "not implemented yet"
+    from datetime import date
+    today = date.today()
+    note = {
+        id:'1',
+        'title':'Mock note',
+        'text' : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. '
+                 'Amet in perspiciatis quo reiciendis? Aliquam excepturi explicabo fuga maiores molestias, soluta tempora unde velit? Cupiditate doloremque harum incidunt pariatur porro, tempora?',
+        'created_date': str(today),
+        'last_modified': str(today),
+        'is_favorite': False
+    }
+    return render_template('note.html')
 
 
 @app.route('/notes/edit/<note_id>', methods=['GET', 'POST'])
