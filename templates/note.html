@@ -20,12 +20,16 @@
                     </p>
 
                     <div class="card-body">
-                        <!-- TODO Make AJAX call here -->
+                        <!-- TODO Make an AJAX call here -->
                         <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch"
+                                    {% if note.is_favorite %}
+                                   checked
+                                    {% endif %}
+                            >
                             <label class="custom-control-label" for="customSwitch">Favorite</label>
                         </div>
-                    <!------------------------------->
+                        <!------------------------------->
                     </div>
                     <div class="btn-group">
                         <a href="{{ url_for('update_note', note_id = note.id) }}" class="btn btn-outline-success mr-3">Edit</a>
