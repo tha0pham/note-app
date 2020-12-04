@@ -5,11 +5,6 @@
 body {
     background: #fafafa;
     color: darkslategrey;
-    border: 3px solid yellow;
-}
-
-main {
-    border: 3px solid mediumpurple;
 }
 
 .bg-green {
@@ -37,7 +32,6 @@ main {
 
 main > .container {
     padding-top: 5rem;
-    border: 1px solid orange;
 }
 
 .btn {
@@ -47,18 +41,4 @@ main > .container {
 .footer {
     color: var(--light-green);
     text-align: center;
-}
-
-.row {
-    border: 1px solid blue;
-    height: 100%;
-}
-
-.col-note {
-    border: 1px solid lime;
-
-}
-
-.col-comment {
-    border: 1px solid red;
 }
