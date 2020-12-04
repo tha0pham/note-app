@@ -25,17 +25,25 @@ def new_note():
 @app.route('/notes/<note_id>')
 def get_note(note_id):
     from datetime import date
-    today = date.today()
+    today = date.today().strftime('%m-%d-%Y')
     note = {
-        id:'1',
-        'title':'Mock note',
-        'text' : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. '
-                 'Amet in perspiciatis quo reiciendis? Aliquam excepturi explicabo fuga maiores molestias, soluta tempora unde velit? Cupiditate doloremque harum incidunt pariatur porro, tempora?',
-        'created_date': str(today),
-        'last_modified': str(today),
-        'is_favorite': False
+        'id': '1',
+        'title': 'Mock note',
+        'text': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. '
+                'Amet in perspiciatis quo reiciendis? Aliquam excepturi explicabo fuga maiores molestias, soluta tempora unde velit? Cupiditate doloremque harum incidunt pariatur porro, tempora?',
+        'created_date': today,
+        'last_modified': today,
+        'is_favorite': True
     }
-    return render_template('note.html')
+    comment = {
+        'id': 1,
+        'text': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
+        'note_id': 1,
+        'user_id': 1,
+        'created_date': today
+    }
+    note['comments'] = [comment for c in range(3)]
+    return render_template('note.html', note = note)
 
 
 @app.route('/notes/edit/<note_id>', methods=['GET', 'POST'])
