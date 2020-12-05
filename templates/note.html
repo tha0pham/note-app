@@ -2,6 +2,24 @@
 {% set active_page = "index" %}
 
 {% block content %}
+    <script>
+        $(function () {
+            $('#customSwitch').click(function () {
+                is_bookmarked = $('#customSwitch').is(':checked')
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ url_for('bookmark_note', note_id = note.id) }}',
+                    data: {'is_bookmarked': is_bookmarked},
+                    success: function (response) {
+                        console.log(response)
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    }
+                });
+            });
+        });
+    </script>
     <div class="row">
         <div class="col col-note">
             <div class="card">
@@ -19,19 +37,16 @@
                         {{ note.text }}
                     </p>
 
-                    <div class="card-body">
-                        <!-- TODO Make an AJAX call here -->
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch"
-                                    {% if note.is_favorite %}
-                                   checked
-                                    {% endif %}
-                            >
-                            <label class="custom-control-label" for="customSwitch">Favorite</label>
-                        </div>
-                        <!------------------------------->
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="customSwitch" name="customSwitch"
+                                {% if note.is_favorite %}
+                               checked
+                                {% endif %}
+                        >
+                        <label class="custom-control-label" for="customSwitch">Favorite</label>
                     </div>
-                    <div class="btn-group">
+
+                    <div class="btn-group mt-3">
                         <a href="{{ url_for('update_note', note_id = note.id) }}" class="btn btn-outline-success mr-3">Edit</a>
                         <form action="{{ url_for('delete_note', note_id = note.id) }}" method="post">
                             <input type="submit" value="Delete" class="btn btn-outline-danger"/>
@@ -49,7 +64,7 @@
                         <!-- TODO Replace with FlaskForm -->
                         <label for="comment">Add a Comment</label>
                         <textarea class="form-control" id="comment" rows="2"></textarea>
-                        <input type="submit" value="Add Comment" class="btn btn-outline-success mt-3">
+                        <input type="submit" value="Add Comment" class="btn btn-outline-success mt-2">
                         <!--------------------------------->
                     </form>
                 </li>

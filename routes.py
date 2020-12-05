@@ -1,7 +1,7 @@
 # imports
 import os
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)  # create an app
 
@@ -44,6 +44,12 @@ def get_note(note_id):
     }
     note['comments'] = [comment for c in range(3)]
     return render_template('note.html', note = note)
+
+
+@app.route('/notes/favorite/<note_id>', methods=['POST'])
+def bookmark_note(note_id):
+    # request.form['is_bookmarked'] == 'true'
+    return "not implemented yet"
 
 
 @app.route('/notes/edit/<note_id>', methods=['GET', 'POST'])
