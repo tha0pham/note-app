@@ -3,12 +3,12 @@
 }
 
 body {
-  background: #fafafa;
-  color: darkslategrey;
+    background: #fafafa;
+    color: darkslategrey;
 }
 
 .bg-green {
-  background-color: green;
+    background-color: green;
 }
 
 .site-header .navbar-nav .nav-link {
@@ -31,14 +31,14 @@ body {
 }
 
 main > .container {
-  padding-top: 5rem;
+    padding-top: 5rem;
 }
 
-.btn-group-vertical .btn {
-  border-radius: 0.25rem !important;
+.btn {
+    border-radius: 0.25rem !important;
 }
 
 .footer {
-  color: var(--light-green);
-  text-align: center;
+    color: var(--light-green);
+    text-align: center;
 }

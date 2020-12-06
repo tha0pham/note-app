@@ -130,3 +130,5 @@ dmypy.json
 
 .idea/
 *.iml
+data.sql
+flask_note_app.db
