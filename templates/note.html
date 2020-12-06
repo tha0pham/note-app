@@ -5,14 +5,9 @@
     <script>
         $(function () {
             $('#customSwitch').click(function () {
-                is_bookmarked = $('#customSwitch').is(':checked')
                 $.ajax({
                     type: 'POST',
                     url: '{{ url_for('bookmark_note', note_id = note.id) }}',
-                    data: {'is_bookmarked': is_bookmarked},
-                    success: function (response) {
-                        console.log(response)
-                    },
                     error: function (error) {
                         console.log(error)
                     }
@@ -30,7 +25,7 @@
                 </div>
                 <div class="card-body">
                     <p class="card-subtitle text-muted mb-2">
-                        Created on {{ note.created_date }}<br>
+                        Created on {{ note.date }}<br>
                         Last modified {{ note.last_modified }}
                     </p>
                     <p class="card-text">
@@ -61,11 +56,9 @@
                 <li class="list-group-item">
 
                     <form action="{{ url_for('new_comment', note_id=note.id) }}" method="post">
-                        <!-- TODO Replace with FlaskForm -->
-                        <label for="comment">Add a Comment</label>
-                        <textarea class="form-control" id="comment" rows="2"></textarea>
-                        <input type="submit" value="Add Comment" class="btn btn-outline-success mt-2">
-                        <!--------------------------------->
+                        {{ form.comment.label }}
+                        {{ form.comment(class_='form-control') }}
+                        {{ form.submit (class_='btn btn-outline-success mt-2')}}
                     </form>
                 </li>
 
