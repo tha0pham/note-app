@@ -1,5 +1,3 @@
-# imports
-import os
 from flask import Flask, render_template, request
 from flask import redirect, url_for 
 from database import db
@@ -16,6 +14,7 @@ from forms import RegisterForm, LoginForm, CommentForm
 app = Flask(__name__)  # create an app
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
+app.config['SECRET_KEY'] = 'SE3155'
 #  Bind SQLAlchemy db object to this Flask app
 db.init_app(app)
 # Setup models
@@ -39,7 +38,6 @@ def get_notes():
     if session.get('user'):
         #retrieve notes from the database
         my_notes = db.session.query(Note).filter_by(user_id=session['user_id']).all()
-
         return render_template('notes.html', notes=my_notes, user=session['user'])
     else:
         return redirect(url_for('login'))
