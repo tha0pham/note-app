@@ -218,3 +218,4 @@ def new_comment(note_id):
 
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(
     os.getenv('PORT', 5000)), debug=True)
+
