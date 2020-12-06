@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request
 from flask import redirect, url_for 
 from database import db
@@ -31,7 +32,7 @@ def index():
         return render_template('index.html')
 
 
-@app.route('/notes')
+@app.route('/notes', methods=['GET', 'POST'])
 def get_notes():
     # retrieve user from the database
     #check if a user is saved in session
@@ -43,7 +44,7 @@ def get_notes():
         return redirect(url_for('login'))
 
 #TODO: Edit contents of note to match data model DONE
-@app.route('/notes/new')
+@app.route('/notes/new', methods=['GET', 'POST'])
 def new_note():
     if session.get('user'):
         if request.method == 'POST':

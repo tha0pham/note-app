@@ -4,11 +4,12 @@
 {% block content %}
 <!-- Enter page content here -->
 <body>
-<h1>Add a Note</h1>
    {% if note %}
+    <h1>Edit a Note</h1>
 	<form action="{{ url_for('update_note', note_id=note.id) }}" method="post">
    {% else %}
-	<form action="new" method="post">
+    <h1>Add a Note</h1>
+	<form action="{{ url_for('new_note') }}" method="post">
    {% endif %}
 	       <p><label>Title</label></p>
 	       <p><input type="text" name="title" value="{% if note %}{{note.title}} {% endif %}"></p>
