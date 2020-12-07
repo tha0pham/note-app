@@ -2,34 +2,30 @@
 {% set active_page = "new_note" %}
 
 {% block content %}
-<!-- Enter page content here -->
-<body>
-   {% if note %}
-    <h1>Edit a Note</h1>
-	<form action="{{ url_for('update_note', note_id=note.id) }}" method="post">
-   {% else %}
-    <h1>Add a Note</h1>
-	<form action="{{ url_for('new_note') }}" method="post">
-   {% endif %}
-	       <p><label>Title</label></p>
-	       <p><input type="text" name="title" value="{% if note %}{{note.title}} {% endif %}"></p>
-	       <p><label>Note</label></p>
-	       <p><textarea name="noteText" rows="6" cols="0">
-	{% if note %}
-		{{note.text}}
-	{% else %}
-	   Add your new note here...
-	{% endif %}
-	</textarea>
-	</p>
-	<p>
-	   {% if note %}
-		<input type="submit" value="Update Note"/>
-	   {% else %}
-		<input type="submit" value="Add Note"/>
-	   {% endif %}
-	</p>
-   </form>
-</body>
-<!-- End of page content -->
+    <!-- Enter page content here -->
+    <body>
+    {% if note %}
+        <h1>Edit a Note</h1>
+        <form action="{{ url_for('update_note', note_id=note.id) }}" method="post">
+    {% else %}
+        <h1>Add a Note</h1>
+        <form action="{{ url_for('new_note') }}" method="post">
+    {% endif %}
+    <div class="form-field mb-3">
+        <label>Title</label>
+        <input class="form-control" type="text" name="title" value="{% if note %}{{ note.title }} {% endif %}">
+    </div>
+    <div class="form-field mb-3">
+        <label>Note</label>
+        <textarea class="form-control" name="noteText" rows="6" cols="0">{% if note %}{{ note.text }}{% else %}Add
+            your new note here...{% endif %}</textarea>
+    </div>
+    {% if note %}
+        <input class="btn btn-outline-success" type="submit" value="Update Note"/>
+    {% else %}
+        <input class="btn btn-outline-success" type="submit" value="Add Note"/>
+    {% endif %}
+    </form>
+    </body>
+    <!-- End of page content -->
 {% endblock content %}

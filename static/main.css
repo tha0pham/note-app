@@ -20,14 +20,14 @@ body {
 }
 
 .site-header .navbar-nav .nav-link.active {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 /* Remove border after inserting logo */
 .logo {
-  border: 1px solid darkslategrey;
-  width: 20vh;
-  height: 20vh;
+    border: 1px solid darkslategrey;
+    width: 20vh;
+    height: 20vh;
 }
 
 main > .container {
