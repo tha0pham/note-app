@@ -17,8 +17,8 @@
     </div>
     <div class="form-field mb-3">
         <label>Note</label>
-        <textarea class="form-control" name="noteText" rows="6" cols="0">{% if note %}{{ note.text }}{% else %}Add
-            your new note here...{% endif %}</textarea>
+        <textarea class="form-control" name="noteText" rows="6"
+                  cols="0">{% if note %}{{ note.text }}{% else %}Add your new note here...{% endif %}</textarea>
     </div>
     {% if note %}
         <input class="btn btn-outline-success" type="submit" value="Update Note"/>
