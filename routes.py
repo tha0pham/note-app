@@ -29,11 +29,9 @@ with app.app_context():
 def index():
     if session.get('user'):
         print(session['user'])
-        logo = os.listdir('static/images')
-        return render_template("index.html", user=session['user'], logo = logo)
+        return render_template("index.html", user=session['user'])
     else:
-        logo = os.listdir('static/images')
-        return render_template('index.html', logo = logo)
+        return render_template('index.html')
 
 
 @app.route('/notes', methods=['GET', 'POST'])
@@ -45,6 +43,20 @@ def get_notes():
         my_notes = db.session.query(Note).filter_by(
             user_id=session['user_id']).all()
         return render_template('notes.html', notes=my_notes,
+                               user=session['user'])
+    else:
+        return redirect(url_for('login'))
+
+
+@app.route('/notes/list', methods=['GET', 'POST'])
+def list_notes():
+    # retrieve user from the database
+    # check if a user is saved in session
+    if session.get('user'):
+        # retrieve notes from the database
+        my_notes = db.session.query(Note).filter_by(
+            user_id=session['user_id']).all()
+        return render_template('listnote.html', notes=my_notes,
                                user=session['user'])
     else:
         return redirect(url_for('login'))

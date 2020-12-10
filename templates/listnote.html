@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% set active_page = "listnote" %}
+
+{% block content %}
+    <!-- Enter page content here -->
+
+    <h1>My Favorite Notes List</h1>
+    <table class="table">
+        <tr>
+            <th class="col">Title</th>
+            <th class="col">Favorite</th>
+            <th class="col">Date</th>
+
+        </tr>
+        {% for note in notes %}
+            <tr>
+                <td>
+                    {% if note.is_favorite %}
+                    <a href="{{ url_for('get_note', note_id = note.id) }}">{{ note.title }}</a>
+                    {% else %}
+                    <a href="{{ url_for('get_note', note_id = note.id) }}" style="display:none">{{ note.title }}</a>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if note.is_favorite %}
+                    <i class="fas fa-star"></i>
+                    {% else %}
+                    <i class="far fa-star" style="display:none"></i>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if note.is_favorite %}
+                    {{ note.date }}
+                    {% else %}
+                    <p style="display:none">{{ note.date }}</p>
+                    {% endif %}
+                </td>
+
+            </tr>
+        {% endfor %}
+    </table>
+    <!-- End of page content -->
+{% endblock content %}
