@@ -4,10 +4,26 @@
 {% block content %}
     <script>
         $(function () {
-            $('#customSwitch').click(function () {
+            $('#favoriteSwitch').click(function () {
                 $.ajax({
                     type: 'POST',
                     url: '{{ url_for('bookmark_note', note_id = note.id) }}',
+                    success: function (response) {
+                        console.log(response)
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    }
+                });
+            });
+
+            $('#publicSwitch').click(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ url_for('publish_note', note_id = note.id) }}',
+                    success: function (response) {
+                        console.log(response)
+                    },
                     error: function (error) {
                         console.log(error)
                     }
@@ -15,7 +31,7 @@
             });
         });
     </script>
-    <div class="row">
+    <div class="row mb-3">
         <div class="col col-note">
             <div class="card">
                 <div class="card-header">
@@ -31,22 +47,37 @@
                     <p class="card-text">
                         {{ note.text }}
                     </p>
+                    {% if session['user_id'] == note.user_id %}
+                        <div class="edit-section">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="favoriteSwitch"
+                                       name="favoriteSwitch"
+                                        {% if note.is_favorite %}
+                                       checked
+                                        {% endif %}
+                                >
+                                <label class="custom-control-label" for="favoriteSwitch">Favorite</label>
+                            </div>
 
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="customSwitch" name="customSwitch"
-                                {% if note.is_favorite %}
-                               checked
-                                {% endif %}
-                        >
-                        <label class="custom-control-label" for="customSwitch">Favorite</label>
-                    </div>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="publicSwitch"
+                                       name="publicSwitch"
+                                        {% if note.is_public %}
+                                       checked
+                                        {% endif %}
+                                >
+                                <label class="custom-control-label" for="publicSwitch">Public</label>
+                            </div>
 
-                    <div class="btn-group mt-3">
-                        <a href="{{ url_for('update_note', note_id = note.id) }}" class="btn btn-outline-success mr-3">Edit</a>
-                        <form action="{{ url_for('delete_note', note_id = note.id) }}" method="post">
-                            <input type="submit" value="Delete" class="btn btn-outline-danger"/>
-                        </form>
-                    </div>
+                            <div class="btn-group mt-3">
+                                <a href="{{ url_for('update_note', note_id = note.id) }}"
+                                   class="btn btn-outline-success mr-3">Edit</a>
+                                <form action="{{ url_for('delete_note', note_id = note.id) }}" method="post">
+                                    <input type="submit" value="Delete" class="btn btn-outline-danger"/>
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -66,7 +97,7 @@
                     {% if note.comments|length > 0 %}
                         {% for comment in note.comments %}
                             <li class="list-group-item">
-                                <small class="text-muted">{{ comment.created_date }}</small>
+                                <small class="text-muted"> {{ comment.created_date }}</small>
                                 <p>{{ comment.text }}</p>
                             </li>
                         {% endfor %}
