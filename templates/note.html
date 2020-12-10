@@ -42,6 +42,7 @@
                     </div>
 
                     <div class="btn-group mt-3">
+                        <a href="{{ url_for('get_notes', note_id = note.id) }}" class="btn btn-outline-primary mr-3">List View</a>
                         <a href="{{ url_for('update_note', note_id = note.id) }}" class="btn btn-outline-success mr-3">Edit</a>
                         <form action="{{ url_for('delete_note', note_id = note.id) }}" method="post">
                             <input type="submit" value="Delete" class="btn btn-outline-danger"/>

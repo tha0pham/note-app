@@ -29,9 +29,11 @@ with app.app_context():
 def index():
     if session.get('user'):
         print(session['user'])
-        return render_template("index.html", user=session['user'])
+        logo = os.listdir('static/images')
+        return render_template("index.html", user=session['user'], logo = logo)
     else:
-        return render_template('index.html')
+        logo = os.listdir('static/images')
+        return render_template('index.html', logo = logo)
 
 
 @app.route('/notes', methods=['GET', 'POST'])
@@ -157,6 +159,7 @@ def delete_note(note_id):
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
+    logo = os.listdir('static/images')
     # validate_on_submit only validates using POST
     if form.validate_on_submit():
         # form validation included a criteria to check the username does not exist
@@ -178,13 +181,14 @@ def register():
         session['user_id'] = the_user.id
 
         return redirect(url_for('get_notes'))
-    return render_template('register.html', form=form)
+    return render_template('register.html', form=form, logo=logo)
 
 
 # TODO Update to fit data model? (May be functional, but double check) DONE
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     login_form = LoginForm()
+    logo = os.listdir('static/images')
     # validate_on_submit only validates using POST
     if login_form.validate_on_submit():
         # we know user exists. We can use one()
@@ -202,10 +206,10 @@ def login():
         # password check failed
         # set error message to alert user
         login_form.password.errors = ["Incorrect username or password."]
-        return render_template("login.html", form=login_form)
+        return render_template("login.html", form=login_form, logo=logo)
     else:
         # form did not validate or GET request
-        return render_template("login.html", form=login_form)
+        return render_template("login.html", form=login_form, logo=logo)
 
 
 @app.route('/logout')
