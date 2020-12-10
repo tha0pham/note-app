@@ -10,7 +10,8 @@
             <th class="col">Date</th>
             <th class="col" colspan="2">Actions</th>
         </tr>
-        {% for note in notes %}
+        {% set sort_by = request.args.sort_by|default('title') %}
+        {% for note in notes|sort(attribute=sort_by) %}
             <tr>
                 <td><a href="{{ url_for('get_note', note_id = note.id) }}">{{ note.title }}</a></td>
                 <td>{{ note.date }}</td>
