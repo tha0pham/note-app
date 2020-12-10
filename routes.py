@@ -257,6 +257,10 @@ def publish_note(note_id):
         return redirect(url_for('login'))
 
 
+@app.errorhandler(Exception)
+def get_error_page(e):
+    return render_template('error.html', e=e)
+
 
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(
     os.getenv('PORT', 5000)), debug=True)
