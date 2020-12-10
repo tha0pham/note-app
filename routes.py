@@ -83,12 +83,14 @@ def new_note():
 @app.route('/notes/<note_id>')
 def get_note(note_id):
     #retrieve note from DB
-    my_note = db.session.query(Note).filter_by(id=note_id, user_id=session['user_id']).one()
+    my_note = db.session.query(Note).filter_by(id=note_id).one()
     if session.get('user') and (session['user'] == my_note.user_id or my_note.is_published):
         #create a comment form object
         form = CommentForm()
 
         return render_template('note.html', note=my_note, user=session['user'], note_user=my_note.user_id form=form)
+    elif session.get('user'):
+        return redirect(url_for('get_public_notes'))
     else:
         return redirect(url_for('login'))
 
