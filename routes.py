@@ -40,8 +40,10 @@ def get_notes():
     # check if a user is saved in session
     if session.get('user'):
         # retrieve notes from the database
+
         my_notes = db.session.query(Note).filter_by(
             user_id=session['user_id']).all()
+
         return render_template('notes.html', notes=my_notes,
                                user=session['user'])
     else:
@@ -94,11 +96,15 @@ def get_note(note_id):
 @app.route('/notes/favorite/<note_id>', methods=['POST'])
 def bookmark_note(note_id):
     if session.get('user'):
-        # request.form['is_bookmarked'] == 'true'
         note = db.session.query(Note).filter_by(id=note_id).one()
         note.is_favorite = not note.is_favorite
         db.session.commit()
-        return "success"
+
+        # allow editing only if user is author
+        if session.get('user_id') == note.user_id:
+            return {'success': True}, 200
+        else:
+            return {'error': 'Not authorized'}, 400
     else:
         return redirect(url_for('login'))
 
@@ -159,8 +165,8 @@ def register():
     form = RegisterForm()
     # validate_on_submit only validates using POST
     if form.validate_on_submit():
-        # form validation included a criteria to check the username does not exist
-        # we can know we are safe to add a user to the database
+        # form validation included a criteria to check the username does not
+        # exist we can know we are safe to add a user to the database
         password_hash = bcrypt.hashpw(
             request.form['password'].encode('utf-8'), bcrypt.gensalt())
         first_name = request.form['firstname']
@@ -233,6 +239,23 @@ def new_comment(note_id):
 
     else:
         return redirect(url_for('login'))
+
+
+@app.route('/notes/publish/<note_id>', methods=['POST'])
+def publish_note(note_id):
+    # check if user is saved in session
+    if session.get('user'):
+        # retrieve note from database
+        my_note = db.session.query(Note).filter_by(id=note_id).one()
+
+        # allow editing only if user is author
+        if session.get('user_id') == my_note.user_id:
+            return {'success': True}, 200
+        else:
+            return {'error': 'Not authorized'}, 400
+    else:
+        return redirect(url_for('login'))
+
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(
