@@ -23,9 +23,7 @@ body {
     font-weight: bold;
 }
 
-/* Remove border after inserting logo */
 .logo {
-    /*border: 1px solid darkslategrey;*/
     background: url('images/pen.png');
     background-size: contain;
     width: 20vh;
@@ -45,11 +43,11 @@ main > .container {
     text-align: center;
 }
 
-.hide {
-    display: none;
+a {
+    color: green;
 }
 
-.table td {
-    empty-cells: hide;
-    /*borderCollapse: collapse;*/
+a:hover {
+    color: mediumseagreen;
+    text-decoration: none;
 }
