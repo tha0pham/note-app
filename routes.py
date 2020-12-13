@@ -49,7 +49,18 @@ def get_notes():
     else:
         return redirect(url_for('login'))
 
-
+@app.route('/public', methods=['GET', 'POST'])
+def get_public_notes():
+    # retrieve user from the database
+    #check if a user is saved in session
+    if session.get('user'):
+        #retrieve notes from the database
+        my_notes = db.session.query(Note).filter_by(is_published = True).all()
+        return render_template('notes.html', notes=my_notes, user=session['user'])
+    else:
+        return redirect(url_for('login'))
+      
+      
 @app.route('/notes/favorite')
 def get_favorite_notes():
     # retrieve user from the database
@@ -92,16 +103,14 @@ def new_note():
 # TODO: Edit contents of note to match data model DONE
 @app.route('/notes/<note_id>')
 def get_note(note_id):
-    if session.get('user'):
-        # retrieve note from DB
-        my_note = db.session.query(Note).filter_by(id=note_id, user_id=session[
-            'user_id']).one()
-
-        # create a comment form object
+    #retrieve note from DB
+    my_note = db.session.query(Note).filter_by(id=note_id).one()
+    if session.get('user') and (session['user'] == my_note.user_id or my_note.is_published):
+        #create a comment form object
         form = CommentForm()
-
-        return render_template('note.html', note=my_note, user=session['user'],
-                               form=form)
+        return render_template('note.html', note=my_note, user=session['user'], note_user=my_note.user_id, form=form)
+    elif session.get('user'):
+        return redirect(url_for('get_public_notes'))
     else:
         return redirect(url_for('login'))
 
@@ -273,8 +282,10 @@ def publish_note(note_id):
 
 @app.errorhandler(Exception)
 def get_error_page(e):
+  #TODO print traceback
     return render_template('error.html', e=e)
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(
     os.getenv('PORT', 5000)), debug=True)
+
