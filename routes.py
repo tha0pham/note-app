@@ -59,7 +59,7 @@ def new_note():
             text = request.form['noteText']
             from datetime import date
             today = date.today()
-            today = today.strftime("%m-%d-%Y")
+            today = today.strftime("%Y-%m-%d")
             print(session['user_id'])
             newEntry = Note(title, text, today, user_id=session['user_id'])
             db.session.add(newEntry)
@@ -126,7 +126,7 @@ def update_note(note_id):
             note.text = text
             from datetime import date
             today = date.today()
-            today = today.strftime("%m-%d-%Y")
+            today = today.strftime("%Y-%m-%d")
             note.last_modified = today
             # update note in DB
             db.session.add(note)
