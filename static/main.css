@@ -49,7 +49,7 @@ main > .container {
     display: none;
 }
 
-.table {
-    /*empty-cells: hide;*/
-    borderCollapse: collapse;
+.table td {
+    empty-cells: hide;
+    /*borderCollapse: collapse;*/
 }

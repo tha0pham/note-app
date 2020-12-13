@@ -18,7 +18,7 @@
                     {% if note.is_favorite %}
                     <a href="{{ url_for('get_note', note_id = note.id) }}">{{ note.title }}</a>
                     {% else %}
-                    <a href="{{ url_for('get_note', note_id = note.id) }}" style="display:none">{{ note.title }}</a>
+                    <a href="{{ url_for('get_note', note_id = note.id) }}" style="display:none"></a>
                     {% endif %}
                 </td>
                 <td>
@@ -32,7 +32,7 @@
                     {% if note.is_favorite %}
                     {{ note.date }}
                     {% else %}
-                    <p style="display:none">{{ note.date }}</p>
+                    <p style="display:none"></p>
                     {% endif %}
                 </td>
 
