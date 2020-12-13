@@ -14,27 +14,29 @@
         </tr>
         {% for note in notes %}
             <tr>
+                {% if note.is_favorite %}
                 <td>
-                    {% if note.is_favorite %}
                     <a href="{{ url_for('get_note', note_id = note.id) }}">{{ note.title }}</a>
-                    {% else %}
-                    <a href="{{ url_for('get_note', note_id = note.id) }}" style="display:none"></a>
-                    {% endif %}
                 </td>
+                    {% else %}
+                <td class="hide"></td>
+                {% endif %}
+
+                {% if note.is_favorite %}
                 <td>
-                    {% if note.is_favorite %}
                     <i class="fas fa-star"></i>
-                    {% else %}
-                    <i class="far fa-star" style="display:none"></i>
-                    {% endif %}
                 </td>
+                    {% else %}
+                <td class="hide"></td>
+                {% endif %}
+
+                {% if note.is_favorite %}
                 <td>
-                    {% if note.is_favorite %}
                     {{ note.date }}
-                    {% else %}
-                    <p style="display:none"></p>
-                    {% endif %}
                 </td>
+                    {% else %}
+                <td class="hide"></td>
+                {% endif %}
 
             </tr>
         {% endfor %}
