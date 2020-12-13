@@ -5,12 +5,14 @@
     <!-- Enter page content here -->
 
     <h1>My Notes</h1>
-    <a href="{{ url_for('list_notes') }}" class="btn btn-outline-primary mr-3">Favorites</a>
+
 
     <table class="table">
         <tr>
             <th class="col">Title</th>
-            <th class="col">Favorite</th>
+            <th class="col">
+                <a href="{{ url_for('get_favorite_notes') }}">Favorites</a>
+            </th>
             <th class="col">Date</th>
             <th class="col" colspan="2">Actions</th>
         </tr>
