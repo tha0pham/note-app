@@ -1,11 +1,14 @@
 {% extends "layout.html" %}
 {% set active_page = "get_notes" %}
-
 {% block content %}
     <!-- Enter page content here -->
 
     <h1>My Notes</h1>
 
+    <h5><a href="{{ url_for('get_notes', sort_by='title') }}">Sort by title</a></h5>
+    <h5><a href="{{ url_for('get_notes', sort_by='title', reverse=true) }}">Sort by title desc</a></h5>
+    <h5><a href="{{ url_for('get_notes', sort_by='date') }}">Sort by date</a></h5>
+    <h5><a href="{{ url_for('get_notes', sort_by='date', reverse=true) }}">Sort by date desc</a></h5>
 
     <table class="table">
         <tr>
@@ -16,7 +19,9 @@
             <th class="col">Date</th>
             <th class="col" colspan="2">Actions</th>
         </tr>
-        {% for note in notes %}
+        {% set sort_by = request.args.sort_by|default('title') %}
+        {% set reverse = true if request.args.reverse else false %}
+        {% for note in notes|sort(attribute=sort_by, reverse=reverse) %}
             <tr>
                 <td><a href="{{ url_for('get_note', note_id = note.id) }}">{{ note.title }}</a></td>
                 <td>

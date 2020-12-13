@@ -1,0 +1,6 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>{% if e.code %}{{ e.code }} - {% endif %}Something wrong happened.</h1>
+    <p>That's all we know.</p>
+    <p><a href="{{ url_for('index') }}">Go somewhere right.</a></p>
+{% endblock %}
