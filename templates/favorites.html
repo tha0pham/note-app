@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% set active_page = "listnote" %}
+
+{% block content %}
+    <!-- Enter page content here -->
+
+    <h1>My Favorites</h1>
+    <table class="table">
+        <tr>
+            <th class="col">Title</th>
+            <th class="col">Date</th>
+            <th class="col" colspan="2">Action</th>
+
+        </tr>
+        {% for note in notes %}
+            <tr>
+                <td>
+                    <a href="{{ url_for('get_note', note_id = note.id) }}">{{ note.title }}</a>
+                </td>
+                <td>
+                    {{ note.date }}
+                </td>
+                <td>
+                    <a href="{{ url_for('update_note', note_id = note.id) }}" class="btn btn-outline-success">Edit</a>
+                </td>
+                <td>
+                    <form action="{{ url_for('delete_note', note_id = note.id) }}" method="post">
+                        <input type="submit" value="Delete" class="btn btn-outline-danger">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ url_for('get_notes') }}" class="btn btn-outline-success">Back to List</a>
+    <!-- End of page content -->
+{% endblock content %}
