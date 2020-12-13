@@ -25,7 +25,9 @@ body {
 
 /* Remove border after inserting logo */
 .logo {
-    border: 1px solid darkslategrey;
+    /*border: 1px solid darkslategrey;*/
+    background: url('images/pen.png');
+    background-size: contain;
     width: 20vh;
     height: 20vh;
 }
@@ -41,4 +43,13 @@ main > .container {
 .footer {
     color: var(--light-green);
     text-align: center;
+}
+
+.hide {
+    display: none;
+}
+
+.table td {
+    empty-cells: hide;
+    /*borderCollapse: collapse;*/
 }
