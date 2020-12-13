@@ -2,25 +2,39 @@
 {% set active_page = "get_notes" %}
 {% block content %}
     <!-- Enter page content here -->
+
     <h1>My Notes</h1>
+
     <h5><a href="{{ url_for('get_notes', sort_by='title') }}">Sort by title</a></h5>
     <h5><a href="{{ url_for('get_notes', sort_by='title', reverse=true) }}">Sort by title desc</a></h5>
     <h5><a href="{{ url_for('get_notes', sort_by='date') }}">Sort by date</a></h5>
     <h5><a href="{{ url_for('get_notes', sort_by='date', reverse=true) }}">Sort by date desc</a></h5>
+
     <table class="table">
         <tr>
-            <th class="col-6">Title</th>
-            <th class="col-4">Date</th>
-            <th class="col-2" colspan="2">Actions</th>
+            <th class="col">Title</th>
+            <th class="col">
+                <a href="{{ url_for('get_favorite_notes') }}">Favorites</a>
+            </th>
+            <th class="col">Date</th>
+            <th class="col" colspan="2">Actions</th>
         </tr>
         {% set sort_by = request.args.sort_by|default('title') %}
         {% set reverse = true if request.args.reverse else false %}
         {% for note in notes|sort(attribute=sort_by, reverse=reverse) %}
             <tr>
                 <td><a href="{{ url_for('get_note', note_id = note.id) }}">{{ note.title }}</a></td>
+                <td>
+                    {% if note.is_favorite %}
+                    <i class="fas fa-star"></i>
+                    {% else %}
+                    <i class="far fa-star"></i>
+                    {% endif %}
+                </td>
                 <td>{{ note.date }}</td>
-                <td><a href="{{ url_for('update_note', note_id = note.id) }}" class="btn
-                btn-outline-success">Edit</a></td>
+                <td>
+                    <a href="{{ url_for('update_note', note_id = note.id) }}" class="btn btn-outline-success">Edit</a>
+                </td>
                 <td>
                     <form action="{{ url_for('delete_note', note_id = note.id) }}" method="post">
                         <input type="submit" value="Delete" class="btn btn-outline-danger">

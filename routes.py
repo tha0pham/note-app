@@ -50,6 +50,20 @@ def get_notes():
         return redirect(url_for('login'))
 
 
+@app.route('/notes/favorite')
+def get_favorite_notes():
+    # retrieve user from the database
+    # check if a user is saved in session
+    if session.get('user'):
+        # retrieve notes from the database
+        my_notes = db.session.query(Note).filter_by(
+            user_id=session['user_id'], is_favorite=True).all()
+        return render_template('favorites.html', notes=my_notes,
+                               user=session['user'])
+    else:
+        return redirect(url_for('login'))
+
+
 # TODO: Edit contents of note to match data model DONE
 @app.route('/notes/new', methods=['GET', 'POST'])
 def new_note():

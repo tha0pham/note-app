@@ -78,6 +78,11 @@
                             </div>
                         </div>
                     {% endif %}
+
+                    <div class="btn-group mt-3">
+                        <a href="{{ url_for('get_notes') }}" class="btn btn-outline-primary mr-3">My Notes</a>
+                        <a href="{{ url_for('get_public_notes') }}" class="btn btn-outline-primary mr-3">Public Notes</a>
+                    </div>
                 </div>
             </div>
         </div>
