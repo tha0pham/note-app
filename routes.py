@@ -130,11 +130,11 @@ def get_note(note_id):
 def bookmark_note(note_id):
     if session.get('user'):
         note = db.session.query(Note).filter_by(id=note_id).one()
-        note.is_favorite = not note.is_favorite
-        db.session.commit()
 
         # allow editing only if user is author
         if session.get('user_id') == note.user_id:
+            note.is_favorite = not note.is_favorite
+            db.session.commit()
             return {'success': True}, 200
         else:
             return {'error': 'Not authorized'}, 400
@@ -299,6 +299,8 @@ def publish_note(note_id):
 
         # allow editing only if user is author
         if session.get('user_id') == my_note.user_id:
+            my_note.is_published = not my_note.is_published
+            db.session.commit()
             return {'success': True}, 200
         else:
             return {'error': 'Not authorized'}, 400
