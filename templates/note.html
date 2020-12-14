@@ -99,18 +99,20 @@
                 </form>
             </div>
             <ul class="list-group comment-section">
-                {% if comments %}
-                    {% if comments|length > 0 %}
-                        {% for comment in comments %}
-                            <li class="list-group-item">
-                                <small class="text-muted"> {{ comment.firstname }} said
-                                    on {{ comment.created_date }}</small>
-                                <p>{{ comment.text }}</p>
-                            </li>
-                        {% endfor %}
-                    {% endif %}
+                {% if comments|length > 0 %}
+                    {% for comment in comments %}
+                        <li class="list-group-item">
+                            <small class="text-muted"> {{ comment.firstname }} said
+                                on {{ comment.created_date }}</small>
+                            <p>{{ comment.text }}</p>
+                            {% if comment.user_id == session['user_id'] %}
+                                <form action="{{ url_for('delete_comment', comment_id = comment.id) }}" method="post">
+                                    <input type="submit" value="Delete" class="btn btn-outline-danger"/>
+                                </form>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
                 {% endif %}
-
             </ul>
         </div>
     </div>

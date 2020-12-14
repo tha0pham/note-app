@@ -109,8 +109,9 @@ def new_note():
 def get_note(note_id):
     # retrieve note from DB
     note = db.session.query(Note).filter_by(id=note_id).one()
-    comments = db.session.query(Comment.created_date, Comment.text,
-                                User.firstname, User.lastname).join(
+    comments = db.session.query(Comment.id, Comment.created_date, Comment.text,
+                                Comment.user_id, User.firstname,
+                                User.lastname).join(
         Comment).filter(
         Comment.user_id == User.id).filter_by(note_id=note_id).all()
     if session.get('user') and (session['user_id'] == note.user_id or
@@ -191,6 +192,20 @@ def delete_note(note_id):
         db.session.delete(my_note)
         db.session.commit()
         return redirect(url_for('get_notes'))
+    else:
+        return redirect(url_for('login'))
+
+
+@app.route('/comments/delete/<comment_id>', methods=['POST'])
+def delete_comment(comment_id):
+    # check if user is saved in session
+    if session.get('user'):
+        # retrieve note from database
+        comment = db.session.query(Comment).filter_by(id=comment_id).one()
+        note = db.session.query(Note).filter_by(id=comment.note_id).one()
+        db.session.delete(comment)
+        db.session.commit()
+        return redirect(url_for('get_note', note_id=note.id))
     else:
         return redirect(url_for('login'))
 
