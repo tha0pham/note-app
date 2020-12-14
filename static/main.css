@@ -1,5 +1,6 @@
 :root {
     --light-green: rgb(204, 250, 204);
+    --table-header: rgb(33, 37, 41);
 }
 
 body {
@@ -50,4 +51,15 @@ a {
 a:hover {
     color: mediumseagreen;
     text-decoration: none;
+}
+
+.comment-section {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.user-tag {
+    padding: .5rem 1rem;
+    display: block;
+    color: white;
 }

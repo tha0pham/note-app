@@ -6,12 +6,11 @@
         <div class="logo d-block mx-auto mb-4"></div>
         <h2>49er Note App</h2>
         <br>
-        <br>
         <h3>Log into your account</h3>
     </div>
 
-    <form method="POST" action="/login">
-        <div class="form-field">{{ form.email.label }} {{ form.email(class_="form-control") }}
+    <form method="POST" action="{{ url_for('login') }}">
+        <div class="form-field mb-2">{{ form.email.label }} {{ form.email(class_="form-control") }}
             {% if form.email.errors %}
                 <ul class="errors">
                     {% for error in form.email.errors %}
@@ -29,7 +28,6 @@
                 </ul>
             {% endif %}
         </div>
-        <br>
         {{ form.submit(class_="btn btn-primary") }}
     </form>
     <br>

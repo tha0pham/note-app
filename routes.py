@@ -1,4 +1,5 @@
 import os
+import traceback
 
 import bcrypt as bcrypt
 from flask import Flask, render_template, request
@@ -28,13 +29,12 @@ with app.app_context():
 @app.route('/index')
 def index():
     if session.get('user'):
-        print(session['user'])
-        return render_template("index.html", user=session['user'])
+        return redirect(url_for('get_notes'))
     else:
         return render_template('index.html')
 
 
-@app.route('/notes', methods=['GET', 'POST'])
+@app.route('/notes')
 def get_notes():
     # retrieve user from the database
     # check if a user is saved in session
@@ -49,18 +49,24 @@ def get_notes():
     else:
         return redirect(url_for('login'))
 
-@app.route('/public', methods=['GET', 'POST'])
+
+@app.route('/public')
 def get_public_notes():
     # retrieve user from the database
-    #check if a user is saved in session
+    # check if a user is saved in session
     if session.get('user'):
-        #retrieve notes from the database
-        my_notes = db.session.query(Note).filter_by(is_published = True).all()
-        return render_template('notes.html', notes=my_notes, user=session['user'])
+        # retrieve notes from the database
+        my_notes = db.session.query(Note.id, Note.title, Note.date,
+                                    User.firstname, User.lastname).join(
+            Note).filter(
+            Note.user_id == User.id).filter_by(is_published=True).all()
+        return render_template('public_notes.html', notes=my_notes,
+                               user=session[
+                                   'user'])
     else:
         return redirect(url_for('login'))
-      
-      
+
+
 @app.route('/notes/favorite')
 def get_favorite_notes():
     # retrieve user from the database
@@ -75,22 +81,21 @@ def get_favorite_notes():
         return redirect(url_for('login'))
 
 
-# TODO: Edit contents of note to match data model DONE
 @app.route('/notes/new', methods=['GET', 'POST'])
 def new_note():
     if session.get('user'):
         if request.method == 'POST':
             title = request.form['title']
             text = request.form['noteText']
+
             from datetime import date
             today = date.today()
-            today = today.strftime("%Y-%m-%d")
-            print(session['user_id'])
+            today = today.strftime('%Y-%m-%d')
+
             newEntry = Note(title, text, today, user_id=session['user_id'])
             db.session.add(newEntry)
             db.session.commit()
-            # id = len(notes) + 1
-            # notes[id] = {'title': title, 'text': text, 'date': today}
+
             return redirect(url_for('get_notes'))
         else:
             # get request - show new note form
@@ -100,22 +105,26 @@ def new_note():
         return redirect(url_for('login'))
 
 
-# TODO: Edit contents of note to match data model DONE
 @app.route('/notes/<note_id>')
 def get_note(note_id):
-    #retrieve note from DB
-    my_note = db.session.query(Note).filter_by(id=note_id).one()
-    if session.get('user') and (session['user'] == my_note.user_id or my_note.is_published):
-        #create a comment form object
+    # retrieve note from DB
+    note = db.session.query(Note).filter_by(id=note_id).one()
+    comments = db.session.query(Comment.created_date, Comment.text,
+                                User.firstname, User.lastname).join(
+        Comment).filter(
+        Comment.user_id == User.id).filter_by(note_id=note_id).all()
+    if session.get('user') and (session['user_id'] == note.user_id or
+                                note.is_published):
+        # create a comment form object
         form = CommentForm()
-        return render_template('note.html', note=my_note, user=session['user'], note_user=my_note.user_id, form=form)
+        return render_template('note.html', note=note, comments=comments,
+                               form=form, user=session['user'])
     elif session.get('user'):
         return redirect(url_for('get_public_notes'))
     else:
         return redirect(url_for('login'))
 
 
-# TODO Check implementation - sort of guessed on this
 @app.route('/notes/favorite/<note_id>', methods=['POST'])
 def bookmark_note(note_id):
     if session.get('user'):
@@ -132,7 +141,6 @@ def bookmark_note(note_id):
         return redirect(url_for('login'))
 
 
-# TODO Update according to data model DONE
 @app.route('/notes/edit/<note_id>', methods=['GET', 'POST'])
 def update_note(note_id):
     # check if a user is saved in session
@@ -143,7 +151,9 @@ def update_note(note_id):
             title = request.form['title']
             # get note data
             text = request.form['noteText']
-            note = db.session.query(Note).filter_by(id=note_id).one()
+            note = db.session.query(Note).filter_by(id=note_id).filter_by(
+                user_id=session['user_id']
+            ).one()
             # update note data
             note.title = title
             note.text = text
@@ -159,7 +169,9 @@ def update_note(note_id):
         else:
             # GET request - show new note form to edit note
             # retrieve note from database
-            my_note = db.session.query(Note).filter_by(id=note_id).one()
+            my_note = db.session.query(Note).filter_by(id=note_id).filter_by(
+                user_id=session['user_id']
+            ).one()
 
             return render_template('new.html', note=my_note,
                                    user=session['user'])
@@ -173,16 +185,16 @@ def delete_note(note_id):
     # check if user is saved in session
     if session.get('user'):
         # retrieve note from database
-        my_note = db.session.query(Note).filter_by(id=note_id).one()
+        my_note = db.session.query(Note).filter_by(id=note_id).filter_by(
+            user_id=session['user_id']
+        ).one()
         db.session.delete(my_note)
         db.session.commit()
-
         return redirect(url_for('get_notes'))
     else:
         return redirect(url_for('login'))
 
 
-# TODO Update to fit data model DONE
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
@@ -210,7 +222,6 @@ def register():
     return render_template('register.html', form=form)
 
 
-# TODO Update to fit data model? (May be functional, but double check) DONE
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     login_form = LoginForm()
@@ -282,10 +293,9 @@ def publish_note(note_id):
 
 @app.errorhandler(Exception)
 def get_error_page(e):
-  #TODO print traceback
+    traceback.print_exc()
     return render_template('error.html', e=e)
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'), port=int(
     os.getenv('PORT', 5000)), debug=True)
-

@@ -62,7 +62,7 @@
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="publicSwitch"
                                        name="publicSwitch"
-                                        {% if note.is_public %}
+                                        {% if note.is_published %}
                                        checked
                                         {% endif %}
                                 >
@@ -79,30 +79,32 @@
                         </div>
                     {% endif %}
 
-                    <div class="btn-group mt-3">
-                        <a href="{{ url_for('get_notes') }}" class="btn btn-outline-primary mr-3">My Notes</a>
-                        <a href="{{ url_for('get_public_notes') }}" class="btn btn-outline-primary mr-3">Public Notes</a>
-                    </div>
                 </div>
+            </div>
+            <div class="btn-group my-3">
+                <a href="{{ url_for('get_favorite_notes') }}" class="btn btn-outline-primary mr-3">View
+                    Favorites</a>
+                <a href="{{ url_for('get_public_notes') }}" class="btn btn-outline-primary mr-3">View Public
+                    Notes</a>
             </div>
         </div>
 
         <div class="col-md-5">
-            <ul class="list-group">
-                <li class="list-group-item">
+            <div class="list-group-item">
 
-                    <form action="{{ url_for('new_comment', note_id=note.id) }}" method="post">
-                        {{ form.comment.label }}
-                        {{ form.comment(class_='form-control') }}
-                        {{ form.submit (class_='btn btn-outline-success mt-2') }}
-                    </form>
-                </li>
-
-                {% if note.comments %}
-                    {% if note.comments|length > 0 %}
-                        {% for comment in note.comments %}
+                <form action="{{ url_for('new_comment', note_id=note.id) }}" method="post">
+                    {{ form.comment.label }}
+                    {{ form.comment(class_='form-control') }}
+                    {{ form.submit (class_='btn btn-outline-success mt-2') }}
+                </form>
+            </div>
+            <ul class="list-group comment-section">
+                {% if comments %}
+                    {% if comments|length > 0 %}
+                        {% for comment in comments %}
                             <li class="list-group-item">
-                                <small class="text-muted"> {{ comment.created_date }}</small>
+                                <small class="text-muted"> {{ comment.firstname }} said
+                                    on {{ comment.created_date }}</small>
                                 <p>{{ comment.text }}</p>
                             </li>
                         {% endfor %}

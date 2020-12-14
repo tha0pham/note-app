@@ -5,21 +5,36 @@
     <!-- Enter page content here -->
 
     <h1>Published Notes</h1>
-       <table class="table">
-         <tr>
-            <th class="col">Title</th>
-            <th class="col">Date</th>
-            <th class="col" colspan="2">Actions</th>
-         </tr>
-          {% for note in notes %}
-	    {% if note.is_published %}
-              <tr>
+    <table class="table">
+        <tr>
+            <th class="col-6">Title
+                <a href="{{ url_for('get_public_notes', sort_by='title', reverse=true) }}"><i class="fas
+            fa-sort-up"></i></a>
+                <a href="{{ url_for('get_public_notes', sort_by='title') }}"><i class="fas
+            fa-sort-down"></i></a>
+            </th>
+            <th class="col-4">Date
+                <a href="{{ url_for('get_public_notes', sort_by='date', reverse=true) }}"> <i class="fas
+            fa-sort-up"></i></a>
+                <a href="{{ url_for('get_public_notes', sort_by='date') }}"> <i class="fas
+            fa-sort-down"></i></a>
+            </th>
+            <th class="col-2">Author</th>
+        </tr>
+        {% set sort_by = request.args.sort_by|default('title') %}
+        {% set reverse = true if request.args.reverse else false %}
+        {% for note in notes|sort(attribute=sort_by, reverse=reverse) %}
+            <tr>
                 <td><a href="{{ url_for('get_note', note_id = note.id) }}">{{ note.title }}</a></td>
-                                <td>{{ note.date }}</td>
-                
-             </tr>
-	  {% endif %}
-           {% endfor %}
+                <td>{{ note.date }}</td>
+                <td>{{ note.firstname }} {{ note.lastname }}</td>
+            </tr>
+        {% endfor %}
     </table>
+    <div class="btn-group">
+        <a href="{{ url_for('get_notes') }}" class="btn btn-outline-primary mr-3">Back to List</a>
+        <a href="{{ url_for('get_favorite_notes') }}" class="btn btn-outline-primary mr-3">View
+            Favorites</a>
+    </div>
     <!-- End of page content -->
 {% endblock content %}

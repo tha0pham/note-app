@@ -20,11 +20,14 @@
         <textarea class="form-control" name="noteText" rows="6"
                   cols="0">{% if note %}{{ note.text }}{% else %}Add your new note here...{% endif %}</textarea>
     </div>
-    {% if note %}
-        <input class="btn btn-outline-success" type="submit" value="Update Note"/>
-    {% else %}
-        <input class="btn btn-outline-success" type="submit" value="Add Note"/>
-    {% endif %}
+    <div class="btn-group mt-3">
+        {% if note %}
+            <input class="btn btn-outline-success mr-3" type="submit" value="Update Note"/>
+        {% else %}
+            <input class="btn btn-outline-success mr-3" type="submit" value="Add Note"/>
+        {% endif %}
+        <a href="{{ url_for('get_notes') }}" class="btn btn-outline-primary">Back to List</a>
+    </div>
     </form>
     </body>
     <!-- End of page content -->
