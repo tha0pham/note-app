@@ -43,7 +43,7 @@ Create a Python virtual environment
 MacOS:
 ```
 python3 -m venv venv
-source vena/bin/activate
+source venv/bin/activate
 ```
 Windows:
 ```
