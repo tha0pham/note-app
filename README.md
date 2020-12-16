@@ -19,7 +19,7 @@ Before you begin ensure you have met the following requirements:
 * You have installed python version 3.6 or higher (https://www.python.org/downloads/)
 * You have installed Flask web framework
 * You have installed SQLite (version 3 / SQLite3) (https://www.sqlite.org/download.html)
-* You have installed wtforms, Flask-WTF, and email_validator
+* You have installed wtforms, Flask-WTF, email_validator, and bcrypt
 
 ## Installing Note App
 
@@ -57,11 +57,12 @@ Install SQLAlchemy
 ```
 pip3 install flask-sqlalchemy
 ```
-Install modules
+Install modules and bcrypt
 ```
 pip3 install wtforms
 pip3 install Flask-WTF
-pip3 email_validator
+pip3 install email_validator
+pip3 install bcrypt
 ```
 Set flask environment variable 
 MacOS:
