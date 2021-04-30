@@ -14,7 +14,7 @@ The application includes the following features:
 
 ## Prerequisites
 
-Before you begin ensure you have met the following requirements:
+Before you run the app ensure you have met the following requirements:
 * You have installed git version 2.22 or higher (https://git-scm.com/downloads)
 * You have installed python version 3.6 or higher (https://www.python.org/downloads/)
 * You have installed SQLite (version 3 / SQLite3) (https://www.sqlite.org/download.html)
@@ -27,20 +27,15 @@ To run Note App locally, follow these steps:
 
 In terminal type the following commands:
 
-Create a directory for the note app
+Clone the project from Github
 ```
-mkdir note_app
+git clone https://github.com/thaopham1816/note-app.git
 ```
 Change into the newly created directory
 ```
 cd note_app
 ```
-Clone the project from Github
-```
-git clone https://github.com/thaopham1816/note-app.git
-```
 Create a Python virtual environment
-
 ```
 python3 -m venv venv
 ```
